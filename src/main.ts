@@ -6,7 +6,8 @@ import express from "express";
 
 import { config } from "./config";
 import { healthRouter } from "./health/health-router";
-import { userRouter } from "./users/infrastructure/http/user-router";
+import { connectMongo } from "./internal/infrastructure/database/connections/mongodb";
+import { userRouter } from "./internal/infrastructure/http/user-router";
 
 function boostrap() {
   const app = express();
@@ -18,6 +19,7 @@ function boostrap() {
   const { port } = config.server;
 
   app.listen(port, () => {
+    connectMongo();
     console.log(`[APP] - Starting application on port ${port}`);
   });
 }
