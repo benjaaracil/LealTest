@@ -1,8 +1,8 @@
-import { config } from "../../config";
-import { UserByIdFinder } from "../application/user-by-id-finder";
-import { UserRepository } from "../domain/user-repository";
-import { UserGetController } from "./http/user-get-controller";
-import { MongoUserRepository } from "./user-repository/mongo-user-repository";
+import { config } from "../../../config";
+import { UserByIdFinder } from "../../application/user-by-id-finder";
+import { UserRepository } from "../../domain/users/user-repository";
+import { UserGetController } from "../http/users/user-get-controller";
+import { MongoUserRepository } from "../repositories/user-repository/mongo-user-repository";
 
 const getUserRepository = (): UserRepository => {
   switch (config.database) {
