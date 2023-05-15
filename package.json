@@ -1,7 +1,7 @@
 {
   "name": "express-typescript-service-skeleton",
   "version": "1.0.0",
-  "description": "Skeleton for new typescript services based on hexagonal architecture",
+  "description": "Leal test based on hexagonal architecture",
   "main": "src/index.js",
   "scripts": {
     "start": "node dist/src/main.js",
