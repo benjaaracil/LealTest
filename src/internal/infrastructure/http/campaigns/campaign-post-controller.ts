@@ -11,7 +11,7 @@ export class CampaignPostController {
     const instance = req.body as CampaignPostBody;
     try {
       await this.campaignCreate.run(instance);
-      return res.status(200).send("Campaña creada correctamente");
+      return res.status(200).send({ message: "Campaña creada correctamente" });
     } catch (error: any) {
       if (error instanceof CampaignNotCreated) {
         return res.status(409).send({ message: error.message });
