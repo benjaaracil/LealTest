@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
-import { UserByIdFinder } from "../../../application/user-by-id-finder";
-import { UserNotFound } from "../../../domain/users/user-not-found";
+import { UserByIdFinder } from "../../../application/users/user-by-id-finder";
+import { UserNotFound } from "../../../domain/users/user-error";
 
 export class UserGetController {
   constructor(private readonly userByIdFinder: UserByIdFinder) {}
@@ -12,12 +12,11 @@ export class UserGetController {
     try {
       const user = await this.userByIdFinder.run(id);
       return res.status(200).send(user);
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof UserNotFound) {
-        return res.status(404).send();
+        return res.status(404).send({ message: error.message });
       }
-
-      return res.status(500).send();
+      return res.status(500).send({ message: error.message });
     }
   }
 }

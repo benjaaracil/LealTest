@@ -1,8 +1,11 @@
 import { Request, Response } from "express";
 
-import { CampaignByIdFinder } from "../../../application/campaign-by-id-finder";
-import { CampaignList } from "../../../application/campaign-list";
-import { CampaignNotFound } from "../../../domain/campaigns/campaign-not-found";
+import { CampaignByIdFinder } from "../../../application/campaigns/campaign-by-id-finder";
+import { CampaignList } from "../../../application/campaigns/campaign-list";
+import {
+  CampaignNotFound,
+  CampaignNotFoundAll,
+} from "../../../domain/campaigns/campaign-errors";
 
 export class CampaignGetController {
   constructor(
@@ -16,12 +19,12 @@ export class CampaignGetController {
     try {
       const campaign = await this.campaignByIdFinder.run(id);
       return res.status(200).send(campaign);
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof CampaignNotFound) {
-        return res.status(404).send();
+        return res.status(404).send({ message: error.message });
       }
 
-      return res.status(500).send();
+      return res.status(500).send({ message: error.message });
     }
   }
 
@@ -29,18 +32,15 @@ export class CampaignGetController {
     const commerceID: string = req.query.commerceID as string;
     const branchID: string = req.query.branchID as string;
 
-    console.log("commerce_id", commerceID);
-    console.log("branch_id", branchID);
-
     try {
       const campaign = await this.campaignList.run(commerceID, branchID);
       return res.status(200).send(campaign);
-    } catch (error) {
-      if (error instanceof CampaignNotFound) {
-        return res.status(404).send();
+    } catch (error: any) {
+      if (error instanceof CampaignNotFoundAll) {
+        return res.status(404).send({ message: error.message });
       }
 
-      return res.status(500).send();
+      return res.status(500).send({ message: error.message });
     }
   }
 }

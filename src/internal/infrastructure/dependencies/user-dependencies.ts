@@ -1,5 +1,5 @@
 import { config } from "../../../config";
-import { UserByIdFinder } from "../../application/user-by-id-finder";
+import { UserByIdFinder } from "../../application/users/user-by-id-finder";
 import { UserRepository } from "../../domain/users/user-repository";
 import { UserGetController } from "../http/users/user-get-controller";
 import { MongoUserRepository } from "../repositories/user-repository/mongo-user-repository";
