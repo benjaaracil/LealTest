@@ -78,14 +78,10 @@ export class MongoCampaignRepository implements CampaignRepository {
 
   async create(body: CampaignPostBody): Promise<Error | null> {
     console.log("Using Mongo for campaigns!");
-    console.log(body)
     try{
-      const rawCampaign = await Campaigns.create(body);
-      console.log("MONGO", rawCampaign)
-
-    } catch (error) {
-      console.error(error);
-      return new Error("Error a la hora de crear campaña")
+      await Campaigns.create(body);
+    } catch (error: any) {
+      return error
     }
     return null
   }
