@@ -12,12 +12,12 @@ export class CampaignPostController {
     try {
       await this.campaignCreate.run(instance);
       return res.status(200).send("Campaña creada correctamente");
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof CampaignNotCreated) {
-        return res.status(404).send();
+        return res.status(409).send({ message: error.message });
       }
 
-      return res.status(500).send();
+      return res.status(500).send({ message: error.message });
     }
   }
 }

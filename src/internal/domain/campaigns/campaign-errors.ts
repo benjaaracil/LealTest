@@ -9,8 +9,8 @@ export class CampaignNotFoundAll extends Error {
   }
 }
 export class CampaignNotCreated extends Error {
-  constructor() {
-    super(`Campaign not created`);
+  constructor(message: string) {
+    super(message);
   }
 }
 export class CampaignDatabaseError extends Error {
