@@ -73,4 +73,6 @@ Sucursal 2: 6463888cbd8287d6f70fa3b1
 
 Las campañas no están creadas para esas sucursales, la idea sería que se creen y se pruebe el funcionamiento a medida que se cargan facturas, revisando si el usuario acumula puntos/coins/ambas o nada.
 
-<a href=”https://lucid.app/lucidchart/be7d849c-0ed4-4431-97fe-59ea52df89b3/edit?viewport_loc=-136%2C109%2C3328%2C1582%2C0_0&invitationId=inv_885fac10-e146-410b-930d-7af39a185d09”>Gráficos</a>
+[Lucid](https://lucid.app/lucidchart/be7d849c-0ed4-4431-97fe-59ea52df89b3/edit?viewport_loc=-136%2C109%2C3328%2C1582%2C0_0&invitationId=inv_885fac10-e146-410b-930d-7af39a185d09)
+
+[Documentation](https://documenter.getpostman.com/view/17497629/2s93kxbm4t)
