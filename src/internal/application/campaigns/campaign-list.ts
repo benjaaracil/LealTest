@@ -11,7 +11,6 @@ export class CampaignList {
   async run(commerceID: string, branchID: string): Promise<Campaign[] | Error> {
     const campaign = await this.campaignRepository.getAll(commerceID, branchID);
     if (campaign instanceof Error) {
-      console.log(campaign.name);
       throw campaign.name == "DocumentNotFoundError"
         ? new CampaignNotFoundAll()
         : new CampaignDatabaseError(campaign.message);

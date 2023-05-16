@@ -7,7 +7,7 @@ import { CampaignGetController } from "../http/campaigns/campaign-get-controller
 import { CampaignPostController } from "../http/campaigns/campaign-post-controller";
 import { MongoCampaignRepository } from "../repositories/campaign-repository/mongo-campaign-repository";
 
-const getCampaignRepository = (): CampaignRepository => {
+export const getCampaignRepository = (): CampaignRepository => {
   switch (config.database) {
     case "mongo":
       return new MongoCampaignRepository();
