@@ -1,11 +1,7 @@
-<h1 align="center">Express Typescript Service Skeleton</h1>
+<h1 align="center">Express Typescript Leal Test</h1>
 
 <p align="center">
-  Skeleton for new typescript services based on express
-</p>
-
-<p align="center">
-    <a href="https://github.com/AlbertHernandez/express-typescript-service-skeleton/actions/workflows/nodejs.yml?branch=main"><img src="https://github.com/AlbertHernandez/express-typescript-service-skeleton/actions/workflows/nodejs.yml/badge.svg?branch=main" alt="nodejs"/></a>
+  With Skeleton for typescript services based on express
 </p>
 
 ## Table of Contents
@@ -31,14 +27,6 @@ npm install
 npm run build
 ```
 
-## Testing
-
-### Jest with Testing Library
-
-```bash
-npm run test
-```
-
 ## Linting
 
 Run the linter
@@ -51,4 +39,13 @@ Fix lint issues automatically
 
 ```bash
 npm run lint:fix
+```
+## Local Run
+
+Para correr proyecto en local. (Modo debugging con start:dev)
+La db es MongoDB Atlas, por ende la conexion se hace automática con el user y pass :D
+
+```bash
+npm start
+npm run start:dev 
 ```

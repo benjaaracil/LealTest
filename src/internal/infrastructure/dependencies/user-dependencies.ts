@@ -4,7 +4,7 @@ import { UserRepository } from "../../domain/users/user-repository";
 import { UserGetController } from "../http/users/user-get-controller";
 import { MongoUserRepository } from "../repositories/user-repository/mongo-user-repository";
 
-const getUserRepository = (): UserRepository => {
+export const getUserRepository = (): UserRepository => {
   switch (config.database) {
     case "mongo":
       return new MongoUserRepository();
