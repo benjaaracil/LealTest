@@ -5,7 +5,7 @@ let mongoose = require('mongoose').set('debug', true)
 let transactionSchema = new mongoose.Schema({
   // _id: Schema.Types.ObjectId,
   user_id:{
-    type: String, 
+    type: Schema.Types.ObjectId, 
     required: true
   },
   commerce_id: {
