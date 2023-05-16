@@ -31,6 +31,7 @@ export class TransactionCreate {
     );
     if (campaignInfo instanceof Error) {
       if (campaignInfo.name == "DocumentNotFoundError") {
+        // Si campaña no existe
         const carga = await this.calculateRewards(body, null, false);
         carga ? (body.points = carga?.puntos) : null;
         carga ? (body.coins = carga?.coins) : null;
@@ -38,30 +39,34 @@ export class TransactionCreate {
         new CampaignDatabaseError(campaignInfo.message);
       }
     } else {
+      //Calculo por defecto lo que le correspondería al usuario sin ninguna recompensa
+      const carga = await this.calculateRewards(body, null, false);
+      carga ? (body.points = carga?.puntos) : null;
+      carga ? (body.coins = carga?.coins) : null;
+
       for (let i = 0; i < campaignInfo.length; i++) {
+        //Chequeo campañas y calculo extras
+        const fechaBody = new Date(body.transaction_date);
+        const after = new Date(campaignInfo[i].transactions_after);
+        const before = new Date(campaignInfo[i].transactions_before);
+        // Cumple condiciones?
         if (
           campaignInfo[i].campaign_active &&
-          body.amount > campaignInfo[i].min_transaction_amount
+          body.amount >= campaignInfo[i].min_transaction_amount &&
+          fechaBody.getTime() > after.getTime() &&
+          fechaBody.getTime() < before.getTime()
         ) {
-          const fechaBody = new Date(body.transaction_date);
-          const after = new Date(campaignInfo[i].transactions_after);
-          const before = new Date(campaignInfo[i].transactions_before);
-
-          if (
-            fechaBody.getTime() > after.getTime() &&
-            fechaBody.getTime() < before.getTime()
-          ) {
-            const carga = await this.calculateRewards(
-              body,
-              campaignInfo[i],
-              true
-            );
-            carga ? (body.points = carga?.puntos) : null;
-            carga ? (body.coins = carga?.coins) : null;
-            console.log("Carga", carga);
-          }
+          console.log("cumple condiciones");
+          const carga = await this.calculateRewards(
+            body,
+            campaignInfo[i],
+            true
+          );
+          carga ? (body.points += carga?.puntos) : null;
+          carga ? (body.coins += carga?.coins) : null;
         }
       }
+      console.log("Soy el body final", body);
     }
     const error = await this.transactionRepository.create(body);
     if (error instanceof Error) {
@@ -69,7 +74,6 @@ export class TransactionCreate {
         ? new TransactionNotCreated(error.message)
         : new TransactionDatabaseError(error.message);
     }
-
     return null;
   }
   async calculateRewards(
@@ -104,23 +108,23 @@ export class TransactionCreate {
           const coinsExtra = Math.round(
             (coins * campaignInfo.reward_percentage) / 100
           );
-          const puntosTotal = puntos + puntosExtra;
-          const coinsTotal = coins + coinsExtra;
+          // const puntosTotal = puntos + puntosExtra;
+          // const coinsTotal = coins + coinsExtra;
 
           if (campaignInfo.reward_type == "both") {
             return {
-              puntos: puntosTotal,
-              coins: coinsTotal,
+              puntos: puntosExtra,
+              coins: coinsExtra,
             };
           } else if (campaignInfo.reward_type == "points") {
             return {
-              puntos: puntosTotal,
-              coins,
+              puntos: puntosExtra,
+              coins: 0,
             };
           } else {
             return {
-              puntos,
-              coins: coinsTotal,
+              puntos: 0,
+              coins: coinsExtra,
             };
           }
         }
