@@ -26,8 +26,14 @@ let campaignSchema = new mongoose.Schema({
     type: Number, 
     min: [1, "Percentage must be 1 at least"]
   },
-  transactions_before: Schema.Types.Date,
-  transactions_after: Schema.Types.Date,
+  transactions_before: {
+    type: Schema.Types.Date,
+    required: true
+  },
+  transactions_after: {
+    type: Schema.Types.Date,
+    required: true
+  },
   branches: [Schema.Types.ObjectId],
   start_date: {
     type: Schema.Types.Date,
