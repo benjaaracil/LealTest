@@ -23,8 +23,6 @@ export class TransactionCreate {
   ) {}
 
   async run(body: TransactionPostBody): Promise<Error | null> {
-    //Acá debería validar todo lo de traer data d comercio y todo xD
-    //LLamar a get campaigns All con filtro branchID con el body.branch_id
     const campaignInfo = await this.campaignRepository.getAll(
       body.commerce_id,
       body.branch_id
@@ -84,6 +82,11 @@ export class TransactionCreate {
     const commerce = await this.commerceRepository.getById(body.commerce_id);
     if (commerce != null) {
       if (!conditions) {
+        console.log(
+          "sin condic1",
+          body.amount,
+          commerce.conversion_rate_points
+        );
         const puntos = Math.round(
           body.amount / commerce.conversion_rate_points
         );
@@ -108,8 +111,6 @@ export class TransactionCreate {
           const coinsExtra = Math.round(
             (coins * campaignInfo.reward_percentage) / 100
           );
-          // const puntosTotal = puntos + puntosExtra;
-          // const coinsTotal = coins + coinsExtra;
 
           if (campaignInfo.reward_type == "both") {
             return {

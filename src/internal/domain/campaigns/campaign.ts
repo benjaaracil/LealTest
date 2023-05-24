@@ -1,7 +1,7 @@
 export class Campaign {
   constructor(
     public readonly id: string,
-    public readonly commerce_id: number,
+    public readonly commerce_id: string,
     public readonly name: string,
     public readonly min_transaction_amount: number,
     public readonly reward_type: string,
