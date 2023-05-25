@@ -23,8 +23,6 @@ export class TransactionCreate {
   ) {}
 
   async run(body: TransactionPostBody): Promise<Error | null> {
-    //Acá debería validar todo lo de traer data d comercio y todo xD
-    //LLamar a get campaigns All con filtro branchID con el body.branch_id
     const campaignInfo = await this.campaignRepository.getAll(
       body.commerce_id,
       body.branch_id
@@ -36,7 +34,7 @@ export class TransactionCreate {
         carga ? (body.points = carga?.puntos) : null;
         carga ? (body.coins = carga?.coins) : null;
       } else {
-        new CampaignDatabaseError(campaignInfo.message);
+        return new CampaignDatabaseError(campaignInfo.message);
       }
     } else {
       //Calculo por defecto lo que le correspondería al usuario sin ninguna recompensa
@@ -56,7 +54,7 @@ export class TransactionCreate {
           fechaBody.getTime() > after.getTime() &&
           fechaBody.getTime() < before.getTime()
         ) {
-          console.log("cumple condiciones");
+          console.log("Cumple condiciones");
           const carga = await this.calculateRewards(
             body,
             campaignInfo[i],
@@ -66,7 +64,7 @@ export class TransactionCreate {
           carga ? (body.coins += carga?.coins) : null;
         }
       }
-      console.log("Soy el body final", body);
+      console.log("Body", body);
     }
     const error = await this.transactionRepository.create(body);
     if (error instanceof Error) {
@@ -87,7 +85,7 @@ export class TransactionCreate {
         const puntos = Math.round(
           body.amount / commerce.conversion_rate_points
         );
-        console.log("sin condic", puntos);
+        console.log("Calculo para sin condiciones");
         const coins = Math.round(body.amount / commerce.conversion_rate_coins);
         console.log(coins);
         return {
@@ -96,6 +94,7 @@ export class TransactionCreate {
         };
       } else {
         if (campaignInfo) {
+          console.log("Calculo para con condiciones");
           const puntos = Math.round(
             body.amount / commerce.conversion_rate_points
           );
@@ -108,8 +107,6 @@ export class TransactionCreate {
           const coinsExtra = Math.round(
             (coins * campaignInfo.reward_percentage) / 100
           );
-          // const puntosTotal = puntos + puntosExtra;
-          // const coinsTotal = coins + coinsExtra;
 
           if (campaignInfo.reward_type == "both") {
             return {
