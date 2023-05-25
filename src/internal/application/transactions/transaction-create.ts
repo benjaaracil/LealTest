@@ -34,7 +34,7 @@ export class TransactionCreate {
         carga ? (body.points = carga?.puntos) : null;
         carga ? (body.coins = carga?.coins) : null;
       } else {
-        new CampaignDatabaseError(campaignInfo.message);
+        return new CampaignDatabaseError(campaignInfo.message);
       }
     } else {
       //Calculo por defecto lo que le correspondería al usuario sin ninguna recompensa
@@ -54,7 +54,7 @@ export class TransactionCreate {
           fechaBody.getTime() > after.getTime() &&
           fechaBody.getTime() < before.getTime()
         ) {
-          console.log("cumple condiciones");
+          console.log("Cumple condiciones");
           const carga = await this.calculateRewards(
             body,
             campaignInfo[i],
@@ -64,7 +64,7 @@ export class TransactionCreate {
           carga ? (body.coins += carga?.coins) : null;
         }
       }
-      console.log("Soy el body final", body);
+      console.log("Body", body);
     }
     const error = await this.transactionRepository.create(body);
     if (error instanceof Error) {
@@ -82,15 +82,10 @@ export class TransactionCreate {
     const commerce = await this.commerceRepository.getById(body.commerce_id);
     if (commerce != null) {
       if (!conditions) {
-        console.log(
-          "sin condic1",
-          body.amount,
-          commerce.conversion_rate_points
-        );
         const puntos = Math.round(
           body.amount / commerce.conversion_rate_points
         );
-        console.log("sin condic", puntos);
+        console.log("Calculo para sin condiciones");
         const coins = Math.round(body.amount / commerce.conversion_rate_coins);
         console.log(coins);
         return {
@@ -99,6 +94,7 @@ export class TransactionCreate {
         };
       } else {
         if (campaignInfo) {
+          console.log("Calculo para con condiciones");
           const puntos = Math.round(
             body.amount / commerce.conversion_rate_points
           );
